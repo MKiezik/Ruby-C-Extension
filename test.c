@@ -3,6 +3,7 @@
 // functions declarations
 VALUE string_test();
 VALUE integer_test();
+VALUE float_test();
 
 
 // Init function name must be followed with 
@@ -11,6 +12,7 @@ void Init_test() {
 
   rb_define_global_function("string_test", string_test, 0);
   rb_define_global_function("integer_test", integer_test, 0);
+  rb_define_global_function("float_test", float_test, 0);
 }
 
 
@@ -80,4 +82,20 @@ VALUE integer_test() {
   rb_p(fv);
 
   return rb_str_new_cstr("integer_test method");
+}
+
+VALUE float_test() {
+
+  VALUE af = rb_float_new(2.123);
+  rb_p(af);
+
+  double d = 1234567890.1234567890;
+  VALUE df = rb_float_new(d); //can cause bugs
+  rb_p(df); // 1234567890.1234567
+  VALUE ddf = DBL2NUM(d); // correct way to convert
+  rb_p(ddf); // 1234567890.1234567
+
+  // if big numbers needed we have to use string, mpfr/gmp library
+
+  return rb_str_new_cstr("float_test method");
 }
