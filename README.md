@@ -13,3 +13,4 @@ $ irb\
   : require_relative './test'\
   : $a\
   : $a.class
+$ ruby extconf.rb && make && ruby -r "./test" -e "p string_test"
