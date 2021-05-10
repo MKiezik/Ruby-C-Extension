@@ -4,6 +4,7 @@
 VALUE string_test();
 VALUE integer_test();
 VALUE float_test();
+VALUE boolean_test();
 
 
 // Init function name must be followed with 
@@ -13,6 +14,7 @@ void Init_test() {
   rb_define_global_function("string_test", string_test, 0);
   rb_define_global_function("integer_test", integer_test, 0);
   rb_define_global_function("float_test", float_test, 0);
+  rb_define_global_function("boolean_test", boolean_test, 0);
 }
 
 
@@ -98,4 +100,30 @@ VALUE float_test() {
   // if big numbers needed we have to use string, mpfr/gmp library
 
   return rb_str_new_cstr("float_test method");
+}
+
+VALUE boolean_test() {
+
+  VALUE x = Qnil;
+  rb_p(x); // nil
+  // Qtrue/number except 8 | Qfalse/0 | Qnil/8
+
+  VALUE arg = Qfalse, str; // "Arg is false!"
+  // VALUE arg = INT2FIX(5000), str; // "The value pf arg is: 5000"
+  // VALUE arg = rb_ary_new(), str; // "The value pf arg is: []"
+  // VALUE arg = rb_hash_new(), str; // "The value pf arg is: {}"
+
+  if(arg) {
+    VALUE str_arg = rb_funcall(arg, rb_intern("to_s"), 0); // convert arg to string
+    char *string = StringValuePtr(str_arg);
+    char buf[1000];
+    sprintf(buf, "The value pf arg is: %s", string);
+    str = rb_str_new_cstr(buf);
+  } else {
+    str = rb_str_new_cstr("Arg is false!");
+  }
+
+  rb_p(str);
+
+  return rb_str_new_cstr("boolean_test method");
 }
